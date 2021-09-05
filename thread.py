@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-#sudo mv /media/temp0/*.plot /media/output/
 
 import threading
 import time
@@ -19,7 +18,7 @@ file0_lock = ""
 file1_lock = ""
 file2_lock = ""
 
-def mover(srcPath,dest,lockId):
+def mover(srcPath,dest):
     if os.path.isfile(srcPath) == False:
         return
 
@@ -73,21 +72,21 @@ while True:
         if destDir0_lock == False and file0_lock == "":
             destDir0_lock = True
             file0_lock = filePath
-            t0 = threading.Thread(target=mover,args=(filePath,destDir0,0))
+            t0 = threading.Thread(target=mover,args=(filePath,destDir0))
             t0.start()
             threadPool.append(t0)
             print("thread started moving "+filePath) 
         elif destDir1_lock == False and file1_lock == "":
             destDir1_lock = True
             file1_lock = filePath
-            t1 = threading.Thread(target=mover,args=(filePath,destDir1,1))
+            t1 = threading.Thread(target=mover,args=(filePath,destDir1))
             t1.start()
             threadPool.append(t1)
             print("thread started moving "+filePath)
         elif destDir2_lock == False and file2_lock == "":
             destDir2_lock = True
             file2_lock = filePath
-            t2 = threading.Thread(target=mover,args=(filePath,destDir2,2))
+            t2 = threading.Thread(target=mover,args=(filePath,destDir2))
             t2.start()
             threadPool.append(t2)
             print("thread started moving "+filePath)
