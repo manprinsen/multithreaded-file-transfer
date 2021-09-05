@@ -15,59 +15,86 @@ destDir2 = "/Users/lemling/Desktop/dest2/"
 destDir0_lock = False
 destDir1_lock = False
 destDir2_lock = False
+file0_lock = ""
+file1_lock = ""
+file2_lock = ""
 
 def mover(srcPath,dest,lockId):
-    #os.system("cp "+sourceFile+" "+destination)
-    #shutil.move(sourceFile,destination)
+    if os.path.isfile(srcPath) == False:
+        return
+
     time.sleep(random.randint(11,20))
-    shutil.copy(srcPath,dest)
-    print("done with "+srcPath)
-    if lockId == 0:
-        global destDir0_lock
+    global destDir0_lock
+    global file0_lock
+    global destDir1_lock
+    global file1_lock
+    global destDir2_lock
+    global file2_lock
+
+    if destDir0_lock and file0_lock == srcPath:
+        os.system("mv "+srcPath+" "+dest) #shutil.move(srcPath,dest)
         destDir0_lock = False
-        print("destDir0_lock="+str(destDir0_lock))
-    elif lockId == 1:
-        global destDir1_lock
+        file0_lock = ""
+        print("done with "+srcPath)
+    elif destDir1_lock and file1_lock == srcPath:
+        os.system("mv "+srcPath+" "+dest) #shutil.move(srcPath,dest)
         destDir1_lock = False
-        print("destDir1_lock="+str(destDir1_lock))
-    elif lockId == 2:
-        global destDir2_lock
+        file1_lock = ""
+        print("done with "+srcPath)
+    if destDir2_lock and file2_lock == srcPath:
+        os.system("mv "+srcPath+" "+dest) #shutil.move(srcPath,dest)
         destDir2_lock = False
-        print("destDir2_lock="+str(destDir2_lock))
-    else:
-        print("null")
+        file2_lock = ""
+        print("done with "+srcPath)
 
-
-print(glob.glob(srcDir))
-files = glob.glob(srcDir+"*.plot")
-#print(files)
-
-
-threadPool = []
-
-for index, filePath in enumerate(files):
-    threadPool.append(index)
-    thread = threadPool[index]
-
-    if destDir0_lock == False:
-        thread = threading.Thread(target=mover,args=(filePath,destDir0,0))
-        destDir0_lock = True
-        print("destDir0_lock="+str(destDir0_lock))
-    elif destDir1_lock == False:
-        thread = threading.Thread(target=mover,args=(filePath,destDir1,1))
-        destDir1_lock = True
-    elif destDir2_lock == False:
-        print("destDir1_lock="+str(destDir1_lock))
-        thread = threading.Thread(target=mover,args=(filePath,destDir2,2))
-        destDir1_lock = True
-        print("destDir2_lock="+str(destDir2_lock))
-    else:
-        print("all directories are busy")
-
-    thread.start()
-
-    print("thread "+str(index)+" started")
-
-print("Active Threads: "+str(threading.active_count()))
-#print(threading.enumerate())
+#print(glob.glob(srcDir))
 print("MainThread: "+str(time.perf_counter()))
+threadPool = []
+old0 = -1
+old1 = -1
+
+while True:
+    time.sleep(10)
+    threadPool = []
+    files = glob.glob(srcDir+"*.plot")
+    nrOfFiles = len(files)
+    print("Active Threads: "+str(threading.active_count()))
+
+    if nrOfFiles == 0 and old0 != nrOfFiles:
+        print("No Files In Source Directory")
+        old0 = nrOfFiles
+        continue
+
+    if destDir0_lock and destDir1_lock and destDir2_lock:
+        print("all directories are busy")
+        continue
+
+    for index, filePath in enumerate(files):
+        if destDir0_lock == False and file0_lock == "":
+            destDir0_lock = True
+            file0_lock = filePath
+            t0 = threading.Thread(target=mover,args=(filePath,destDir0,0))
+            t0.start()
+            threadPool.append(t0)
+            print("thread started moving "+filePath) 
+        elif destDir1_lock == False and file1_lock == "":
+            destDir1_lock = True
+            file1_lock = filePath
+            t1 = threading.Thread(target=mover,args=(filePath,destDir1,1))
+            t1.start()
+            threadPool.append(t1)
+            print("thread started moving "+filePath)
+        elif destDir2_lock == False and file2_lock == "":
+            destDir2_lock = True
+            file2_lock = filePath
+            t2 = threading.Thread(target=mover,args=(filePath,destDir2,2))
+            t2.start()
+            threadPool.append(t2)
+            print("thread started moving "+filePath)
+        #else:
+            #print("all directories are STILL busy")
+
+    print("Active Threads: "+str(threading.active_count()))
+
+    for thread in threadPool:
+        thread.join()
