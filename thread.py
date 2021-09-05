@@ -22,7 +22,7 @@ def mover(srcPath,dest):
     if os.path.isfile(srcPath) == False:
         return
 
-    time.sleep(random.randint(11,20))
+    #time.sleep(random.randint(11,20))
     global destDir0_lock
     global file0_lock
     global destDir1_lock
@@ -31,17 +31,17 @@ def mover(srcPath,dest):
     global file2_lock
 
     if destDir0_lock and file0_lock == srcPath:
-        os.system("cp "+srcPath+" "+dest) #shutil.move(srcPath,dest)
+        os.system("mv "+srcPath+" "+dest) #shutil.move(srcPath,dest)
         destDir0_lock = False
         file0_lock = ""
         print("done with "+srcPath)
     elif destDir1_lock and file1_lock == srcPath:
-        os.system("cp "+srcPath+" "+dest) #shutil.move(srcPath,dest)
+        os.system("mv "+srcPath+" "+dest) #shutil.move(srcPath,dest)
         destDir1_lock = False
         file1_lock = ""
         print("done with "+srcPath)
     if destDir2_lock and file2_lock == srcPath:
-        os.system("cp "+srcPath+" "+dest) #shutil.move(srcPath,dest)
+        os.system("mv "+srcPath+" "+dest) #shutil.move(srcPath,dest)
         destDir2_lock = False
         file2_lock = ""
         print("done with "+srcPath)
