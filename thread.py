@@ -7,13 +7,13 @@ import os
 import random
 import shutil
 
-srcDir = "/media/raiddisk/" #"/Users/lemling/Desktop/source/"
-destDir0 = "/media/disk0/"  #/Users/lemling/Desktop/dest0/"
-destDir1 = "/media/disk1/"  #"/Users/lemling/Desktop/dest1/"
-destDir2 = "/media/disk2/"  #"/Users/lemling/Desktop/dest2/"
-os.system("sudo chmod 777 "+destDir0)
-os.system("sudo chmod 777 "+destDir1)
-os.system("sudo chmod 777 "+destDir2)
+srcDir = "Z:\\"     #"/media/raiddisk/" #"/Users/lemling/Desktop/source/"
+destDir0 = "D:\\"   #/media/disk0/"  #/Users/lemling/Desktop/dest0/"
+destDir1 = "E:\\"   #"/media/disk1/"  #"/Users/lemling/Desktop/dest1/"
+destDir2 = "F:\\"   #/media/disk2/"  #"/Users/lemling/Desktop/dest2/"
+#os.system("sudo chmod 777 "+destDir0)
+#os.system("sudo chmod 777 "+destDir1)
+#os.system("sudo chmod 777 "+destDir2)
 
 destDir0_lock = False
 destDir1_lock = False
@@ -35,20 +35,20 @@ def mover(srcPath,dest):
     global file2_lock
 
     if destDir0_lock and file0_lock == srcPath:
-        os.system("mv "+srcPath+" "+dest) 
-        #shutil.move(srcPath,dest)
+        #os.system("mv "+srcPath+" "+dest) 
+        shutil.move(srcPath,dest)
         destDir0_lock = False
         file0_lock = ""
         print("done with "+srcPath)
     elif destDir1_lock and file1_lock == srcPath:
-        os.system("mv "+srcPath+" "+dest) 
-        #shutil.move(srcPath,dest)
+        #os.system("mv "+srcPath+" "+dest) 
+        shutil.move(srcPath,dest)
         destDir1_lock = False
         file1_lock = ""
         print("done with "+srcPath)
     if destDir2_lock and file2_lock == srcPath:
-        os.system("mv "+srcPath+" "+dest) 
-        #shutil.move(srcPath,dest)
+        #os.system("mv "+srcPath+" "+dest) 
+        shutil.move(srcPath,dest)
         destDir2_lock = False
         file2_lock = ""
         print("done with "+srcPath)
