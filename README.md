@@ -28,7 +28,7 @@ The main goal of this project is to transfer large files (e.g., Chia plots of 10
 Clone the repository to the receiving computer.
 
 ```
-git clone https://github.com/yourusername/multithreaded-filetransfer.git
+git clone https://github.com/manprinsen/multithreaded-filetransfer.git
 ```
 
 ## Usage
