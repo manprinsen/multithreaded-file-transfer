@@ -19,7 +19,7 @@ The main goal of this project is to transfer large files (e.g., Chia plots of 10
 
 ## Requirements
 
-- Windows operating system on both computers.
+- Windows operating system on the receiving computer.
 - Python installed on the receiving computer.
 - Robocopy installed on the receiving computer.
 
